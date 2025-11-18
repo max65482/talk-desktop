@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-const { Notification, shell } = require('electron')
+//const { Notification, shell } = require('electron')
 const semver = require('semver')
 const packageJson = require('../../package.json')
 
@@ -99,6 +99,13 @@ async function checkForNewVersion({ showNotification = false, forceRequest = fal
 	// Request a new version or get cached
 	const latest = (!forceRequest && cachedNewLatestVersion) ? cachedNewLatestVersion : await getLatestReleaseVersion(__CHANNEL__ === 'beta')
 
+	console.error("Checked for new version")
+
+	// There is a new version! Now we may cache it and stop requesting a new version
+	cachedNewLatestVersion = latest
+
+	return true
+
 	// Something goes wrong... No worries, we will try again later.
 	if (!latest) {
 		return false
@@ -108,12 +115,11 @@ async function checkForNewVersion({ showNotification = false, forceRequest = fal
 		return false
 	}
 
-	// There is a new version! Now we may cache it and stop requesting a new version
-	cachedNewLatestVersion = latest
 
-	if (showNotification) {
-		notifyAboutNewVersion(latest)
-	}
+	
+	//if (showNotification) {
+	//	notifyAboutNewVersion(latest)
+	//}
 
 	return true
 }
@@ -152,4 +158,5 @@ function stopReleaseNotificationScheduler() {
 
 module.exports = {
 	setupReleaseNotificationScheduler,
+	checkForNewVersion,
 }
