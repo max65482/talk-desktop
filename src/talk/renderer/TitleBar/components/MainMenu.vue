@@ -23,6 +23,7 @@ import IconCloudDownloadOutline from 'vue-material-design-icons/CloudDownloadOut
 import { BUILD_CONFIG } from '../../../../shared/build.config.ts'
 import { getCurrentTalkRoutePath } from '../../TalkWrapper/talk.service.ts'
 import { checkForNewVersion } from '../../../../app/githubReleaseNotification.service.js'
+import { showInfo } from '@nextcloud/dialogs'
 
 const packageInfo = window.TALK_DESKTOP.packageInfo
 
@@ -39,6 +40,7 @@ const newVersionAvailable = ref(false);
 function updateNewVersionAvailable() {
 	checkForNewVersion({ showNotification: false })
 		.then(result => { newVersionAvailable.value = result })
+	showInfo("<a href=\"https://github.com/nextcloud/talk-desktop/releases/latest\">Update available! Click to download.</a> ", { timeout: -1, isHTML: true } )
 }
 
 </script>
